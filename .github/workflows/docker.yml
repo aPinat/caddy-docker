@@ -1,0 +1,22 @@
+name: Build Docker image
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Login to ghcr.io
+        run: docker login ghcr.io -u aPinat -p ${{ secrets.PACKAGES_PAT }}
+      - name: Build Docker image
+        run: docker build . -t caddy
+      - name: Tag Docker image (${{ github.sha }})
+        run: docker tag caddy ghcr.io/apinat/caddy:${{ github.sha }}
+      - name: Tag Docker image (latest)
+        run: docker tag caddy ghcr.io/apinat/caddy:latest
+      - name: Push Docker image
+        run: docker push ghcr.io/apinat/caddy
