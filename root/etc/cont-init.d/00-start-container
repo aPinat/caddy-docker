@@ -1,0 +1,24 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+umask "${UMASK}"
+
+echo "
+----------------------------------------------------------------------
+ENVIRONMENT
+----------------------------------------------------------------------
+PUID=${PUID}
+PGID=${PGID}
+UMASK=${UMASK}
+TZ=${TZ}
+----------------------------------------------------------------------
+"
+
+echo "Creating user..."
+useradd -o -u "${PUID}" -U -d "${CONFIG_DIR}" -s /bin/false apinat && \
+usermod -G users apinat
+groupmod -o -g "${PGID}" apinat
+
+echo "Applying permissions to ${CONFIG_DIR}"
+chmod "=rwx" "${CONFIG_DIR}"
+chown apinat:apinat "${CONFIG_DIR}"
