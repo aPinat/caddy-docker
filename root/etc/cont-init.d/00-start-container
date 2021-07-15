@@ -21,4 +21,4 @@ groupmod -o -g "${PGID}" apinat
 
 echo "Applying permissions to ${CONFIG_DIR}"
 chmod "=rwx" "${CONFIG_DIR}"
-chown apinat:apinat "${CONFIG_DIR}"
+chown -R apinat:apinat "${CONFIG_DIR}"
