@@ -10,6 +10,10 @@ FROM ghcr.io/hotio/base:alpine
 
 EXPOSE 80 443 2019
 
+RUN apk add --no-cache mailcap
+
+RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
+
 COPY root/ /
 
 COPY --from=builder /usr/bin/caddy /app/caddy
