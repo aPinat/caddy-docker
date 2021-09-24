@@ -3,5 +3,10 @@
 
 umask "${UMASK}"
 
-XDG_CONFIG_HOME="${CONFIG_DIR}" XDG_DATA_HOME="${CONFIG_DIR}" HOME="${CONFIG_DIR}" \
-exec s6-setuidgid apinat "/usr/local/bin/caddy" run --config "${CONFIG_DIR}/Caddyfile"
+if [ -f "${CONFIG_DIR}/caddy.json" ]; then
+  XDG_CONFIG_HOME="${CONFIG_DIR}" XDG_DATA_HOME="${CONFIG_DIR}" HOME="${CONFIG_DIR}" \
+  exec s6-setuidgid apinat "/usr/local/bin/caddy" run --config "${CONFIG_DIR}/caddy.json"
+else
+  XDG_CONFIG_HOME="${CONFIG_DIR}" XDG_DATA_HOME="${CONFIG_DIR}" HOME="${CONFIG_DIR}" \
+  exec s6-setuidgid apinat "/usr/local/bin/caddy" run --config "${CONFIG_DIR}/Caddyfile"
+fi
