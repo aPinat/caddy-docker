@@ -3,7 +3,7 @@ FROM caddy/caddy:${VERSION}-builder-alpine AS builder
 
 RUN xcaddy build \
     --with github.com/mholt/caddy-webdav \
-    --with github.com/greenpau/caddy-auth-jwt
+    --with github.com/greenpau/caddy-authorize
 
 
 FROM ghcr.io/hotio/base:alpine
