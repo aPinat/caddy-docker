@@ -1,0 +1,37 @@
+name: Check upstream version
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check upstream version and compare to container tags
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.PAT_REPO_PACKAGES }}
+          script: |
+            const releases = await github.rest.repos.getLatestRelease({
+                owner: 'caddyserver',
+                repo: 'caddy'
+            });
+            console.log(releases.data.tag_name);
+
+            const container = await github.rest.packages.getAllPackageVersionsForPackageOwnedByAuthenticatedUser({
+                package_type: 'container',
+                package_name: 'caddy'
+            });
+            console.log(container.data[0].metadata.container.tags);
+
+            if (!container.data[0].metadata.container.tags.includes(releases.data.tag_name.replace('v', ''))) {
+                const workflow = await github.rest.actions.createWorkflowDispatch({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    workflow_id: 'docker.yml',
+                    ref: 'main',
+                });
+                console.log(workflow);
+            }

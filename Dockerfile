@@ -1,4 +1,5 @@
-FROM caddy/caddy:2.4.5-builder-alpine AS builder
+ARG VERSION=2
+FROM caddy/caddy:${VERSION}-builder-alpine AS builder
 
 RUN xcaddy build \
     --with github.com/mholt/caddy-webdav \
