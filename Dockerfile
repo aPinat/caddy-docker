@@ -15,6 +15,7 @@ RUN apk add --no-cache mailcap
 RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
 
 COPY root/ /
+RUN chmod -R +x /etc/cont-init.d/ /etc/services.d/
 
 COPY --from=builder /usr/bin/caddy /app/caddy
 
