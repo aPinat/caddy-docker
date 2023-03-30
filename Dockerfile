@@ -6,7 +6,7 @@ RUN xcaddy build \
     --with github.com/greenpau/caddy-security
 
 
-FROM cr.hotio.dev/hotio/base:alpine-20230211050916
+FROM cr.hotio.dev/hotio/base:alpine-20230329190839
 
 EXPOSE 80 443 2019
 
