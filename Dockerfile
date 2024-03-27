@@ -1,23 +1,10 @@
-ARG VERSION=2
-FROM caddy/caddy:${VERSION}-builder-alpine AS builder
+FROM caddy:2.7.5-builder-alpine@sha256:3e0232193d2e16a551210bb7cf4da86b6d0bf45cb70508c343c680065d7c440e AS builder
 
 RUN xcaddy build \
     --with github.com/mholt/caddy-webdav \
     --with github.com/greenpau/caddy-security
 
 
-FROM cr.hotio.dev/hotio/base:alpine-20231201005035
+FROM caddy:2.7.5-alpine@sha256:9821d1ef822957bf0ac22f9c6e26ad6a3198604f29b3b79194acba7ccaff4532
 
-EXPOSE 80 443 2019
-
-RUN apk add --no-cache mailcap
-
-COPY root/ /
-RUN chmod -R +x /etc/cont-init.d/ /etc/services.d/
-
-COPY --from=builder /usr/bin/caddy /app/caddy
-
-RUN chmod -R u=rwX,go=rX "${APP_DIR}" && \
-    ln -s "${APP_DIR}/caddy" "/usr/local/bin/caddy" && \
-    apk add --no-cache libcap && \
-    setcap CAP_NET_BIND_SERVICE=+eip /app/caddy
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy

@@ -25,18 +25,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get latest upstream release
-        uses: actions/github-script@v7
-        id: 'latest'
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          result-encoding: string
-          script: |
-            const releases = await github.rest.repos.getLatestRelease({
-              owner: 'caddyserver',
-              repo: 'caddy',
-            });
-            return releases.data.tag_name.replace('v', '');
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
@@ -45,7 +33,6 @@ jobs:
           flavor: |
             latest=${{ github.ref_name == 'main' }}
           tags: |
-            type=semver,pattern={{version}},value=v${{ steps.latest.outputs.result }}
             type=ref,event=branch
             type=ref,event=pr
             type=sha
@@ -53,7 +40,5 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
-          build-args: |
-            "VERSION=${{ steps.latest.outputs.result }}"
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
