@@ -1,4 +1,4 @@
-FROM caddy:2.8.4-builder-alpine@sha256:efcaded1f3de9b4af57b504287685af4abb4d6152188550387b454236526a9fc AS builder
+FROM caddy:2.8.4-builder-alpine@sha256:87e32379e55b89b32f4f6ba4287e14b99e44420d098a7aa8461836d4f104de5e AS builder
 
 RUN xcaddy build \
     --with github.com/mholt/caddy-webdav \
