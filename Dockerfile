@@ -1,10 +1,10 @@
-FROM caddy:2.9.1-builder-alpine@sha256:e691e045fccb5d6d411dad22ab15860b00d6aabea521363969fa42f0aab5154b AS builder
+FROM caddy:2.10.0-builder-alpine@sha256:16205c8e035dae7faae3cb36ff03d76bb08ae2054968a28cf97ef95d28375e46 AS builder
 
 RUN xcaddy build \
     --with github.com/mholt/caddy-webdav \
     --with github.com/greenpau/caddy-security
 
 
-FROM caddy:2.9.1-alpine@sha256:eed289e78b2a0fa7d856b5d5aa9f0b39f727ab49c92f27986f1c03291c42f119
+FROM caddy:2.10.0-alpine@sha256:e2e3a089760c453bc51c4e718342bd7032d6714f15b437db7121bfc2de2654a6
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
