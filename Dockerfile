@@ -2,7 +2,8 @@ FROM caddy:2.10.0-builder-alpine@sha256:16205c8e035dae7faae3cb36ff03d76bb08ae205
 
 RUN xcaddy build \
     --with github.com/mholt/caddy-webdav \
-    --with github.com/greenpau/caddy-security
+    --with github.com/greenpau/caddy-security \
+    --with github.com/caddy-dns/cloudflare
 
 
 FROM caddy:2.10.0-alpine@sha256:e2e3a089760c453bc51c4e718342bd7032d6714f15b437db7121bfc2de2654a6
