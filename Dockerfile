@@ -1,4 +1,4 @@
-FROM caddy:2.10.0-builder-alpine@sha256:cc6c40aa7cdea02ef9cb99f3c4e4664ecdb6066ae93ae52ed5288afc511e1241 AS builder
+FROM caddy:2.10.2-builder-alpine@sha256:7b1db717a61f87586e0dd1770c81af4cd23f5479d38fe44df98270aa80a197eb AS builder
 
 RUN xcaddy build \
     --with github.com/mholt/caddy-webdav \
@@ -6,6 +6,6 @@ RUN xcaddy build \
     --with github.com/caddy-dns/cloudflare
 
 
-FROM caddy:2.10.0-alpine@sha256:ae4458638da8e1a91aafffb231c5f8778e964bca650c8a8cb23a7e8ac557aa3c
+FROM caddy:2.10.2-alpine@sha256:a4180db0805b3725ddf936d2e6290553745c7339c003565da717ee612fd8a888
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
